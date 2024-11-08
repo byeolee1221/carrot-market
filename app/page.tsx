@@ -3,7 +3,7 @@ import Link from "next/link";
 const Home = () => {
   return (
     <div className="flex flex-col items-center justify-between min-h-screen p-6">
-      <div className="my-auto flex flex-col items-center gap-2 *:font-medium">
+      <div className="my-auto flex flex-col items-center gap-4 *:font-medium">
         <span className="text-9xl">🥕</span>
         <h1 className="text-4xl">당근</h1>
         <h2 className="text-2xl">당근 마켓에 어서오세요!</h2>
@@ -11,7 +11,7 @@ const Home = () => {
       <div className="flex flex-col gap-3 items-center w-full">
         <Link
           href="/create-account"
-          className="w-full bg-orange-500 text-white text-lg font-medium py-2.5 rounded-md text-center hover:bg-orange-400 transition-colors"
+          className="primary-btn py-2.5 text-lg"
         >
           시작하기
         </Link>
