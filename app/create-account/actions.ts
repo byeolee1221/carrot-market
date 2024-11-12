@@ -1,8 +1,8 @@
 "use server";
 
+import { PASSWORD_ERROR_MESSAGE, PASSWORD_MIN_LENGTH } from "@/lib/constants";
+import { PASSWORD_REGEX } from "@/lib/constants";
 import { z } from "zod";
-
-const passwordRegex = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).+$/);
 
 const checkUsername = (username: string) => {
   return !username.includes("potato");
@@ -20,25 +20,23 @@ const formSchema = z
   .object({
     username: z
       .string({
-        invalid_type_error: "Username must be a string!",
-        required_error: "Username is required!",
+        invalid_type_error: "닉네임은 문자열이어야 합니다.",
+        required_error: "닉네임을 입력해주세요.",
       })
-      .min(3, "Way too short")
-      .max(10, "That's too long")
       .toLowerCase()
       .trim()
       .transform((username) => `🍕 ${username} 🍕`)
       .refine(checkUsername, "No potatoes allowed"),
     email: z.string().email().toLowerCase(),
-    password: z.string().min(10).regex(passwordRegex, "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character"),
-    confirmPassword: z.string().min(10),
+    password: z.string().min(PASSWORD_MIN_LENGTH).regex(PASSWORD_REGEX, PASSWORD_ERROR_MESSAGE),
+    confirmPassword: z.string().min(PASSWORD_MIN_LENGTH),
   })
   .refine(checkPasswords, {
     path: ["confirmPassword"],
-    message: "Passwords do not match",
+    message: "비밀번호가 일치하지 않습니다.",
   });
 
-export const createAccount = async (prevState: any, formData: FormData) => {
+export const createAccount = async (prevState: unknown, formData: FormData) => {
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),
